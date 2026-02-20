@@ -18,6 +18,7 @@ body {
   font-family: "Merriweather", serif;
   background: var(--color2);
   color: var(--color1);
+  overflow-x: hidden;
 }
 
 .container {
@@ -25,6 +26,7 @@ body {
   width: 100%;
   padding: 0 16px;
   margin: 0 auto;
+  position: relative;
 }
 
 section {
@@ -56,6 +58,9 @@ nav {
         color: var(--color4);
       }
     }
+  }
+  & .hamburger {
+    display: none;
   }
 }
 
@@ -222,7 +227,8 @@ header {
     gap: 100px;
 
     & img {
-      width: 600px;
+      max-width: 600px;
+      width: 100%;
       border: 5px solid rgb(183, 183, 183);
       box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.188);
       padding: 8px;
@@ -497,18 +503,6 @@ footer {
 }
 
 
-/* ===== Responsive ===== */
-
-@media (max-width: 768px) {
-  .contact__form {
-    padding: 40px 30px;
-  }
-
-  .contact__title {
-    font-size: 36px;
-  }
-}
-
 /* ===== Image Modal ===== */
 .img-modal {
   position: fixed;
@@ -576,16 +570,4 @@ footer {
 
 .img-modal__close:hover {
   filter: brightness(0.95);
-}
-
-/* На мобилке чуть меньше */
-@media (max-width: 700px) {
-  .img-modal__close {
-    width: 48px;
-    height: 48px;
-    top: 12px;
-    right: 12px;
-    font-size: 24px;
-    border-radius: 12px;
-  }
 }

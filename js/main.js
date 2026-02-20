@@ -1,103 +1,115 @@
-(() => {
-    const section = document.querySelector(".reviews");
-    if (!section) return;
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav__links");
 
-    const viewport = section.querySelector(".reviews__viewport");
-    const track = section.querySelector(".reviews__track");
-    const cards = Array.from(section.querySelectorAll(".reviews__card"));
-    const btnPrev = section.querySelector(".reviews__arrow--left");
-    const btnNext = section.querySelector(".reviews__arrow--right");
-    const dotsWrap = section.querySelector(".reviews__dots");
+hamburger.onclick = function () {
+    hamburger.classList.toggle("hamburger_active");
+    navLinks.classList.toggle("nav__links_active");
+}
 
-    let page = 0;
-    let pages = 1;
-    let perView = 3;
+    ; (() => {
+        const section = document.querySelector(".reviews");
+        if (!section) return;
 
-    const getGapPx = () => {
-        const styles = window.getComputedStyle(track);
-        const gap = parseFloat(styles.gap || styles.columnGap || "0");
-        return Number.isFinite(gap) ? gap : 0;
-    };
+        const viewport = section.querySelector(".reviews__viewport");
+        const track = section.querySelector(".reviews__track");
+        const cards = Array.from(section.querySelectorAll(".reviews__card"));
+        const btnPrev = section.querySelector(".reviews__arrow--left");
+        const btnNext = section.querySelector(".reviews__arrow--right");
+        const dotsWrap = section.querySelector(".reviews__dots");
 
-    const getPerView = () => {
-        if (window.innerWidth <= 700) return 1;
-        if (window.innerWidth <= 1100) return 2;
-        return 3;
-    };
+        let page = 0;
+        let pages = 1;
+        let perView = 3;
 
-    const maxTranslate = () => {
-        const gap = getGapPx();
-        const trackWidth = track.scrollWidth;
-        const viewWidth = viewport.clientWidth;
-        return Math.max(0, trackWidth - viewWidth + gap);
-    };
+        const getGapPx = () => {
+            const styles = window.getComputedStyle(track);
+            const gap = parseFloat(styles.gap || styles.columnGap || "0");
+            return Number.isFinite(gap) ? gap : 0;
+        };
 
-    const renderDots = () => {
-        dotsWrap.innerHTML = "";
-        for (let i = 0; i < pages; i++) {
-            const b = document.createElement("button");
-            b.type = "button";
-            b.className = "reviews__dot" + (i === page ? " is-active" : "");
-            b.setAttribute("aria-label", `Перейти к отзывам: страница ${i + 1}`);
-            b.addEventListener("click", () => {
-                page = i;
-                update();
-            });
-            dotsWrap.appendChild(b);
-        }
-    };
+        // ВАЖНО: matchMedia стабильно совпадает с CSS media queries
+        const getPerView = () => {
+            if (window.matchMedia("(max-width: 700px)").matches) return 1;
+            if (window.matchMedia("(max-width: 1100px)").matches) return 2;
+            return 3;
+        };
 
-    const update = () => {
-        if (!cards.length) return;
+        const maxTranslate = () => {
+            const gap = getGapPx();
+            const trackWidth = track.scrollWidth;
+            const viewWidth = viewport.clientWidth;
+            return Math.max(0, trackWidth - viewWidth + gap);
+        };
 
-        const gap = getGapPx();
-        const cardW = cards[0].getBoundingClientRect().width;
+        const renderDots = () => {
+            dotsWrap.innerHTML = "";
 
-        // шаг перелистывания = ширина одной карточки + gap
-        const step = cardW + gap;
+            for (let i = 0; i < pages; i++) {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.className = "reviews__dot" + (i === page ? " is-active" : "");
+                b.setAttribute("aria-label", `Перейти к отзывам: страница ${i + 1}`);
+                b.addEventListener("click", () => {
+                    page = i;
+                    update();
+                });
+                dotsWrap.appendChild(b);
+            }
+        };
 
-        // сдвиг на "страницу" = step * кол-во карточек на странице
-        let translate = page * step * perView;
+        const update = () => {
+            if (!cards.length) return;
 
-        // жёстко ограничиваем, чтобы ничего не уезжало за край
-        const maxT = maxTranslate();
-        if (translate > maxT) translate = maxT;
-        if (translate < 0) translate = 0;
+            const gap = getGapPx();
+            const cardW = cards[0].getBoundingClientRect().width;
 
-        track.style.transform = `translateX(${-Math.round(translate)}px)`;
+            const step = cardW + gap;
+            let translate = page * step * perView;
 
-        btnPrev.disabled = page <= 0;
-        btnNext.disabled = page >= pages - 1;
+            const maxT = maxTranslate();
+            translate = Math.max(0, Math.min(translate, maxT));
 
-        const dots = Array.from(dotsWrap.querySelectorAll(".reviews__dot"));
-        dots.forEach((d, i) => d.classList.toggle("is-active", i === page));
-    };
+            track.style.transform = `translateX(${-Math.round(translate)}px)`;
 
-    const compute = () => {
-        perView = getPerView();
-        pages = Math.max(1, Math.ceil(cards.length / perView));
-        page = Math.min(page, pages - 1);
+            btnPrev.disabled = page <= 0;
+            btnNext.disabled = page >= pages - 1;
 
-        renderDots();
+            const dots = Array.from(dotsWrap.querySelectorAll(".reviews__dot"));
+            dots.forEach((d, i) => d.classList.toggle("is-active", i === page));
+        };
 
-        // важный момент: ждём кадр, чтобы браузер успел пересчитать размеры
-        requestAnimationFrame(update);
-    };
+        const compute = () => {
+            perView = getPerView();
 
-    btnPrev.addEventListener("click", () => {
-        page = Math.max(0, page - 1);
-        update();
-    });
+            // 9 отзывов:
+            // phone perView=1 => 9 точек
+            // tablet perView=2 => 5 точек (ceil(9/2)=5)
+            pages = Math.max(1, Math.ceil(cards.length / perView));
+            page = Math.min(page, pages - 1);
 
-    btnNext.addEventListener("click", () => {
-        page = Math.min(pages - 1, page + 1);
-        update();
-    });
+            renderDots();
 
-    window.addEventListener("resize", compute);
+            // ждём кадр + ещё кадр (на мобилках иногда нужно)
+            requestAnimationFrame(() => requestAnimationFrame(update));
+        };
 
-    compute();
-})();
+        btnPrev.addEventListener("click", () => {
+            page = Math.max(0, page - 1);
+            update();
+        });
+
+        btnNext.addEventListener("click", () => {
+            page = Math.min(pages - 1, page + 1);
+            update();
+        });
+
+        window.addEventListener("resize", compute);
+        window.addEventListener("orientationchange", compute);
+        window.addEventListener("load", compute);
+
+        // старт
+        compute();
+    })();
 
 (() => {
     const modal = document.getElementById("imgModal");
