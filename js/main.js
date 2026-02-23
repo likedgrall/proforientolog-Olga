@@ -1,115 +1,131 @@
 const hamburger = document.querySelector(".hamburger");
 const navLinks = document.querySelector(".nav__links");
+const navLinksAll = document.querySelector(".nav__links a")
 
-hamburger.onclick = function () {
-    hamburger.classList.toggle("hamburger_active");
-    navLinks.classList.toggle("nav__links_active");
+function closeMenu() {
+    hamburger.classList.remove("hamburger_active");
+    navLinks.classList.remove("nav__links_active");
+    document.body.classList.remove("scroll-none");
 }
 
-    ; (() => {
-        const section = document.querySelector(".reviews");
-        if (!section) return;
+// Просто закрываем меню при клике на любую ссылку
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function () {
+        closeMenu();
+    });
+});
 
-        const viewport = section.querySelector(".reviews__viewport");
-        const track = section.querySelector(".reviews__track");
-        const cards = Array.from(section.querySelectorAll(".reviews__card"));
-        const btnPrev = section.querySelector(".reviews__arrow--left");
-        const btnNext = section.querySelector(".reviews__arrow--right");
-        const dotsWrap = section.querySelector(".reviews__dots");
+// Обработчик гамбургера
+hamburger.addEventListener('click', function () {
+    this.classList.toggle("hamburger_active");
+    navLinks.classList.toggle("nav__links_active");
+    document.body.classList.toggle("scroll-none");
+});
 
-        let page = 0;
-        let pages = 1;
-        let perView = 3;
+; (() => {
+    const section = document.querySelector(".reviews");
+    if (!section) return;
 
-        const getGapPx = () => {
-            const styles = window.getComputedStyle(track);
-            const gap = parseFloat(styles.gap || styles.columnGap || "0");
-            return Number.isFinite(gap) ? gap : 0;
-        };
+    const viewport = section.querySelector(".reviews__viewport");
+    const track = section.querySelector(".reviews__track");
+    const cards = Array.from(section.querySelectorAll(".reviews__card"));
+    const btnPrev = section.querySelector(".reviews__arrow--left");
+    const btnNext = section.querySelector(".reviews__arrow--right");
+    const dotsWrap = section.querySelector(".reviews__dots");
 
-        // ВАЖНО: matchMedia стабильно совпадает с CSS media queries
-        const getPerView = () => {
-            if (window.matchMedia("(max-width: 700px)").matches) return 1;
-            if (window.matchMedia("(max-width: 1100px)").matches) return 2;
-            return 3;
-        };
+    let page = 0;
+    let pages = 1;
+    let perView = 3;
 
-        const maxTranslate = () => {
-            const gap = getGapPx();
-            const trackWidth = track.scrollWidth;
-            const viewWidth = viewport.clientWidth;
-            return Math.max(0, trackWidth - viewWidth + gap);
-        };
+    const getGapPx = () => {
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.gap || styles.columnGap || "0");
+        return Number.isFinite(gap) ? gap : 0;
+    };
 
-        const renderDots = () => {
-            dotsWrap.innerHTML = "";
+    // ВАЖНО: matchMedia стабильно совпадает с CSS media queries
+    const getPerView = () => {
+        if (window.matchMedia("(max-width: 700px)").matches) return 1;
+        if (window.matchMedia("(max-width: 1100px)").matches) return 2;
+        return 3;
+    };
 
-            for (let i = 0; i < pages; i++) {
-                const b = document.createElement("button");
-                b.type = "button";
-                b.className = "reviews__dot" + (i === page ? " is-active" : "");
-                b.setAttribute("aria-label", `Перейти к отзывам: страница ${i + 1}`);
-                b.addEventListener("click", () => {
-                    page = i;
-                    update();
-                });
-                dotsWrap.appendChild(b);
-            }
-        };
+    const maxTranslate = () => {
+        const gap = getGapPx();
+        const trackWidth = track.scrollWidth;
+        const viewWidth = viewport.clientWidth;
+        return Math.max(0, trackWidth - viewWidth + gap);
+    };
 
-        const update = () => {
-            if (!cards.length) return;
+    const renderDots = () => {
+        dotsWrap.innerHTML = "";
 
-            const gap = getGapPx();
-            const cardW = cards[0].getBoundingClientRect().width;
+        for (let i = 0; i < pages; i++) {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "reviews__dot" + (i === page ? " is-active" : "");
+            b.setAttribute("aria-label", `Перейти к отзывам: страница ${i + 1}`);
+            b.addEventListener("click", () => {
+                page = i;
+                update();
+            });
+            dotsWrap.appendChild(b);
+        }
+    };
 
-            const step = cardW + gap;
-            let translate = page * step * perView;
+    const update = () => {
+        if (!cards.length) return;
 
-            const maxT = maxTranslate();
-            translate = Math.max(0, Math.min(translate, maxT));
+        const gap = getGapPx();
+        const cardW = cards[0].getBoundingClientRect().width;
 
-            track.style.transform = `translateX(${-Math.round(translate)}px)`;
+        const step = cardW + gap;
+        let translate = page * step * perView;
 
-            btnPrev.disabled = page <= 0;
-            btnNext.disabled = page >= pages - 1;
+        const maxT = maxTranslate();
+        translate = Math.max(0, Math.min(translate, maxT));
 
-            const dots = Array.from(dotsWrap.querySelectorAll(".reviews__dot"));
-            dots.forEach((d, i) => d.classList.toggle("is-active", i === page));
-        };
+        track.style.transform = `translateX(${-Math.round(translate)}px)`;
 
-        const compute = () => {
-            perView = getPerView();
+        btnPrev.disabled = page <= 0;
+        btnNext.disabled = page >= pages - 1;
 
-            // 9 отзывов:
-            // phone perView=1 => 9 точек
-            // tablet perView=2 => 5 точек (ceil(9/2)=5)
-            pages = Math.max(1, Math.ceil(cards.length / perView));
-            page = Math.min(page, pages - 1);
+        const dots = Array.from(dotsWrap.querySelectorAll(".reviews__dot"));
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === page));
+    };
 
-            renderDots();
+    const compute = () => {
+        perView = getPerView();
 
-            // ждём кадр + ещё кадр (на мобилках иногда нужно)
-            requestAnimationFrame(() => requestAnimationFrame(update));
-        };
+        // 9 отзывов:
+        // phone perView=1 => 9 точек
+        // tablet perView=2 => 5 точек (ceil(9/2)=5)
+        pages = Math.max(1, Math.ceil(cards.length / perView));
+        page = Math.min(page, pages - 1);
 
-        btnPrev.addEventListener("click", () => {
-            page = Math.max(0, page - 1);
-            update();
-        });
+        renderDots();
 
-        btnNext.addEventListener("click", () => {
-            page = Math.min(pages - 1, page + 1);
-            update();
-        });
+        // ждём кадр + ещё кадр (на мобилках иногда нужно)
+        requestAnimationFrame(() => requestAnimationFrame(update));
+    };
 
-        window.addEventListener("resize", compute);
-        window.addEventListener("orientationchange", compute);
-        window.addEventListener("load", compute);
+    btnPrev.addEventListener("click", () => {
+        page = Math.max(0, page - 1);
+        update();
+    });
 
-        // старт
-        compute();
-    })();
+    btnNext.addEventListener("click", () => {
+        page = Math.min(pages - 1, page + 1);
+        update();
+    });
+
+    window.addEventListener("resize", compute);
+    window.addEventListener("orientationchange", compute);
+    window.addEventListener("load", compute);
+
+    // старт
+    compute();
+})();
 
 (() => {
     const modal = document.getElementById("imgModal");

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/media.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-    <link rel="preload" as="image" href="/img/headerPhoto.webp">
+    <link rel="preload" as="image" href="./img/headerPhoto.webp">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <title>Профориентолог Ольга — помощь в выборе профессии и карьерного пути</title>
 </head>
@@ -180,12 +180,12 @@
             <div class="reviews__dots" aria-label="Пагинация отзывов"></div>
         </div>
     </section>
-    <section class="contact" id="contacts">
+    <section class="contact" id="contact">
         <div class="container">
-            <h2 class="contact__title">Контакты</h2>
+            <h2 data-aos-duration="700" data-aos="fade-down" class="contact__title">Контакты</h2>
 
             <!-- ВАЖНО: action = твой Apps Script URL -->
-            <form class="contact__form" id="contactForm" method="POST"
+            <form data-aos-duration="700" data-aos="fade-up" class="contact__form" id="contactForm" method="POST"
                 action="https://script.google.com/macros/s/AKfycbypz19yXcT_m0xXS_LXuAN0PC6YUEdVDDQrDyx9GblfF2vNADmtGeYzsNXAjeekaZm2/exec"
                 target="gas_iframe">
 
@@ -206,7 +206,7 @@
                 </div>
 
                 <div class="contact__field">
-                    <input type="text" name="contact" placeholder="Ваши контакты (подпишите какая!)" required>
+                    <input type="text" name="contact" placeholder="Ваши контакты (подпишите контакт!)" required>
                 </div>
 
                 <!-- Honeypot (скрытое поле для ботов) -->
