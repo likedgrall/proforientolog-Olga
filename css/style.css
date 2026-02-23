@@ -77,7 +77,7 @@ header {
   height: 100vh;
   background-image:
     linear-gradient(to top, rgba(47, 32, 88, 0.6), rgba(0, 0, 0, 0.45)),
-    url("../img/headerPhoto.png");
+    url("../img/headerPhoto.webp");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
