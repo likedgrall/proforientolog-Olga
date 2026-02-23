@@ -6,80 +6,6 @@
   --color5: #fff7d6;
 }
 
-/* Планшеты */
-@media (max-width: 1100px) {
-  .about {
-    padding: 70px 0;
-
-    & h2 {
-      font-size: 38px;
-      margin-bottom: 40px;
-    }
-
-    & .about__elements {
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-
-      /* текстовый блок */
-      & .about__description {
-        width: 100%;
-        max-width: 720px;
-      }
-
-      & p {
-        font-size: 15px;
-        line-height: 1.65;
-        margin-bottom: 26px;
-        text-align: left;
-      }
-
-      & ul {
-        margin-left: 20px;
-        gap: 12px;
-
-        & li {
-          font-size: 16px;
-          line-height: 1.5;
-        }
-      }
-    }
-  }
-
-  .reviews {
-    padding: 70px 0;
-  }
-
-  .reviews__title {
-    font-size: 36px;
-    margin-bottom: 40px;
-  }
-
-  .reviews__wrap {
-    gap: 14px;
-  }
-
-  .reviews__track {
-    gap: 20px;
-    transition: transform 0.45s ease;
-  }
-
-  .reviews__card {
-    flex: 0 0 calc((100% - 20px) / 2); /* 2 карточки, 1 gap=20 */
-    padding: 10px;
-  }
-
-  .reviews__img {
-    height: 320px;
-  }
-
-  .reviews__arrow {
-    width: 44px;
-    height: 44px;
-    font-size: 36px;
-  }
-}
-
 @media (max-width: 1315px) {
   .work {
     & .work__elements {
@@ -124,6 +50,87 @@
   }
 }
 
+@media (max-width: 1100px) {
+  .work {
+    & h2 {
+      font-size: 38px;
+    }
+  }
+  .about {
+    padding: 70px 0;
+
+    & h2 {
+      font-size: 38px;
+      margin-bottom: 40px;
+    }
+
+    & .about__elements {
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+
+      /* текстовый блок */
+      & .about__description {
+        width: 100%;
+        max-width: 720px;
+      }
+
+      & p {
+        font-size: 15px;
+        line-height: 1.65;
+        margin-bottom: 26px;
+        text-align: left;
+      }
+
+      & ul {
+        margin-left: 20px;
+        gap: 12px;
+
+        & li {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  .reviews {
+    padding: 70px 0;
+  }
+
+  .reviews__title {
+    font-size: 38px;
+  }
+
+  .reviews__wrap {
+    gap: 14px;
+  }
+
+  .reviews__track {
+    gap: 20px;
+    transition: transform 0.45s ease;
+  }
+
+  .reviews__card {
+    flex: 0 0 calc((100% - 20px) / 2); /* 2 карточки, 1 gap=20 */
+    padding: 10px;
+  }
+
+  .reviews__img {
+    height: 320px;
+  }
+
+  .reviews__arrow {
+    width: 44px;
+    height: 44px;
+    font-size: 36px;
+  }
+
+  .contact__title {
+    font-size: 38px;
+  }
+}
+
 @media (max-width: 1050px) {
   .work {
     & .work__elements {
@@ -149,99 +156,124 @@
 }
 
 @media (max-width: 768px) {
-  .work {
-    & h2 {
-      font-size: 36px;
-    }
-  }
-
-  .hamburger {
-    display: flex !important;
-    border: none;
-    width: 40px;
-    height: 20px;
-    background: transparent;
-    position: absolute;
-    right: 20px;
-  }
-
-  .hamburger span {
-    background-color: var(--color4);
-    height: 2px;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    transition: 0.4s;
-  }
-
-  .hamburger span:nth-child(1) {
-    top: 0;
-  }
-
-  .hamburger span:nth-child(2) {
-    top: 9px;
-  }
-
-  .hamburger span:nth-child(3) {
-    bottom: 0;
-  }
-
   .nav__links {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
+    /* твои стили */
+  }
+
+  /* Очень мощный костыль, но работает почти всегда */
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body:has(.nav__links_active) {
+    overflow-x: hidden !important;
+    position: fixed; /* ← фиксируем body */
+    width: 100%;
+    left: 0;
     top: 0;
-    flex-direction: column;
-    background-color: var(--color3);
-    justify-content: center;
-    align-items: center;
-    z-index: 0;
-    visibility: hidden;
-    opacity: 0;
-    right: -100%;
-    transition: 0.4s;
   }
 
-  .nav__links a {
-    font-size: 28px;
-    border-bottom: 2px solid var(--color2);
-  }
+  nav {
+    /* чтобы кнопка позиционировалась внутри контейнера */
+    & .container {
+      position: relative;
+    }
 
-  .nav__links a:hover {
-    color: var(--color4);
-    border-bottom: 2px solid var(--color4);
-  }
+    & .hamburger {
+      display: flex !important;
+      border: none;
+      width: 40px;
+      height: 20px;
+      background: transparent;
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2001;
 
-  .hamburger_active span:nth-child(1) {
-    top: 9px;
-    transform: rotate(45deg);
-  }
+      & span {
+        background-color: var(--color4);
+        height: 2px;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        transition: 0.4s;
 
-  .hamburger_active span:nth-child(2) {
-    transform: translateX(-150%);
-    opacity: 0;
-  }
+        &:nth-child(1) {
+          top: 0;
+        }
+        &:nth-child(2) {
+          top: 9px;
+        }
+        &:nth-child(3) {
+          bottom: 0;
+        }
+      }
+    }
 
-  .hamburger_active span:nth-child(3) {
-    bottom: 9px;
-    transform: rotate(-45deg);
-  }
+    /* меню-оверлей на весь экран */
+    & .nav__links {
+      position: fixed;
+      inset: 0; /* top:0 right:0 bottom:0 left:0 */
+      box-sizing: border-box;
+      height: 100dvh;
+      padding: 0;
+      margin: 0;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      background-color: var(--color3);
+      z-index: 2000;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+      width: 100%;
+      max-width: 100dvw; /* ← или 100dvw */
+      overflow-x: hidden; /* на случай если где-то вылезает контент */
 
-  .nav__links_active {
-    right: 0;
-    opacity: 1;
-    visibility: visible;
+      & a {
+        font-size: 24px;
+        border-bottom: 2px solid var(--color2);
+        padding: 6px 0;
+
+        &:hover {
+          color: var(--color4);
+          border-bottom-color: var(--color4);
+        }
+      }
+    }
+
+    /* активный класс */
+    & .nav__links_active {
+      transform: translateX(0);
+    }
+
+    /* анимация бургера */
+    & .hamburger_active {
+      & span:nth-child(1) {
+        top: 9px;
+        transform: rotate(45deg);
+      }
+      & span:nth-child(2) {
+        transform: translateX(-150%);
+        opacity: 0;
+      }
+      & span:nth-child(3) {
+        bottom: 9px;
+        transform: rotate(-45deg);
+      }
+    }
   }
 }
 
 @media (max-width: 700px) {
   .reviews {
     padding: 60px 0;
-  }
-
-  .reviews__title {
-    font-size: 30px;
-    margin-bottom: 28px;
   }
 
   .reviews__wrap {
@@ -270,6 +302,23 @@
 
   .reviews__dots {
     gap: 10px;
+  }
+
+  .contact {
+    & .contact__form {
+      padding: 50px 30px 30px;
+      & .contact__form-title {
+        font-size: 22px;
+      }
+      & .contact__list {
+        & li {
+          font-size: 14px;
+        }
+      }
+
+      & .contact__btn {
+      }
+    }
   }
 }
 
@@ -366,6 +415,30 @@
           font-size: 16px;
         }
       }
+    }
+  }
+
+  .contact {
+    & .contact__form {
+      padding: 40px 20px 25px;
+      & .contact__form-title {
+        font-size: 22px;
+      }
+      & .contact__list {
+        & li {
+          font-size: 14px;
+        }
+      }
+
+      & .contact__btn {
+        font-size: 14px !important;
+      }
+    }
+  }
+
+  .nav__links {
+    & a {
+      font-size: 18px !important;
     }
   }
 }

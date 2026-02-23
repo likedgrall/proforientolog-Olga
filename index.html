@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <nav data-aos-duration="700" data-aos="fade-down" id="nav">
+    <nav id="nav">
         <div class="container">
             <div class="nav__links">
                 <a href="#work">Направление деятельности</a>
@@ -78,7 +78,7 @@
             <h2 data-aos-duration="700" data-aos="fade-down">Обо мне</h2>
             <div class="about__elements">
                 <img data-aos-duration="1000" data-aos="fade-right" src="./img/aboutPhoto.png" alt="">
-                <div data-aos-duration="700" data-aos="fade-left" class="about__description">
+                <div data-aos-duration="700" data-aos="fade-up" class="about__description">
                     <p>Мой путь к профориентации был долгим и очень насыщенным. У меня за плечами медицинское
                         образование (фельдшер) и 10 лет работы в медицине, затем 23 года в косметологии и 17 лет
                         управления собственным бизнесом в индустрии красоты (салон, косметология, учебный центр).
@@ -106,6 +106,7 @@
     <section class="reviews" id="reviews">
         <div class="container">
             <h2 data-aos-duration="700" data-aos="fade-down" class="reviews__title">Отзывы</h2>
+            
 
             <div data-aos-duration="700" data-aos="fade-up" class="reviews__wrap">
                 <button class="reviews__arrow reviews__arrow--left" type="button" aria-label="Предыдущие отзывы">
@@ -113,8 +114,9 @@
                 </button>
 
                 <div class="reviews__viewport">
+                    <p>Кликните на карточку и можно посмотреть ближе!</p>
                     <div class="reviews__track">
-                        
+
                         <article class="reviews__card">
                             <img class="reviews__img" src="./img/otziv1.png" alt="Отзыв 1">
                         </article>
@@ -146,7 +148,7 @@
                         <article class="reviews__card">
                             <img class="reviews__img" src="./img/otziv8.png" alt="Отзыв 8">
                         </article>
-                        
+
                         <article class="reviews__card">
                             <img class="reviews__img" src="./img/otziv9.png" alt="Отзыв 9">
                         </article>
@@ -161,40 +163,60 @@
             <div class="reviews__dots" aria-label="Пагинация отзывов"></div>
         </div>
     </section>
-   <!-- <section class="contact" id="contacts">
+    <section class="contact" id="contacts">
         <div class="container">
             <h2 class="contact__title">Контакты</h2>
 
-            <div class="contact__form-wrapper">
-                <form class="contact__form">
-                    <h3 class="contact__form-title">
-                        Оставьте, пожалуйста, свой номер<br>
-                        и я перезвоню
-                    </h3>
+            <!-- ВАЖНО: action = твой Apps Script URL -->
+            <form class="contact__form" id="contactForm" method="POST"
+                action="https://script.google.com/macros/s/AKfycbypz19yXcT_m0xXS_LXuAN0PC6YUEdVDDQrDyx9GblfF2vNADmtGeYzsNXAjeekaZm2/exec"
+                target="gas_iframe">
 
-                    <ul class="contact__list">
-                        <li>Отвечу на интересующие Вас вопросы</li>
-                        <li>Запишу на консультацию на удобное время</li>
-                    </ul>
+                <h3 class="contact__form-title">Оставить заявку</h3>
 
-                    <div class="contact__field">
-                        <input type="text" placeholder="Ваше имя" required>
-                    </div>
+                <div class="contact__field">
+                    <select class="contact__select" name="category" required>
+                        <option value="" disabled selected>Выберете категорию</option>
+                        <option value="Для взрослых">Для взрослых</option>
+                        <option value="Для подростков">Для подростков</option>
+                        <option value="Выбор профильного обучения">Выбор профильного обучения</option>
+                        <option value="Т-игра">Т-игра</option>
+                    </select>
+                </div>
 
-                    <div class="contact__field">
-                        <input type="tel" placeholder="Номер телефона" required>
-                    </div>
+                <div class="contact__field">
+                    <input type="text" name="name" placeholder="Ваше имя" required>
+                </div>
 
-                    <label class="contact__agree">
-                        <input type="checkbox" required>
-                        Согласие на обработку персональных данных
+                <div class="contact__field">
+                    <input type="text" name="contact" placeholder="Ваши контакты (подпишите какая!)" required>
+                </div>
+
+                <!-- Honeypot (скрытое поле для ботов) -->
+                <div class="hp-field" aria-hidden="true">
+                    <label>
+                        Не заполняйте это поле
+                        <input type="text" name="website" tabindex="-1" autocomplete="off">
                     </label>
+                </div>
 
-                    <button type="submit" class="contact__btn">
-                        Записаться на консультацию
-                    </button>
-                </form>
-            </div>
+                <label class="contact__agree">
+                    <input type="checkbox" name="agree" required>
+                    Согласие на обработку персональных данных
+                </label>
+
+                <div id="formMessage" style="display:none; margin-top:12px; padding:10px; border-radius:8px;"></div>
+
+                <button type="submit" class="contact__btn">
+                    <span class="btn__text">Записаться на консультацию</span>
+                    <span class="btn__spinner" aria-hidden="true"></span>
+                </button>
+
+                <!-- Скрытое поле requestId будет добавлено скриптом -->
+            </form>
+
+            <!-- Скрытый iframe для отправки -->
+            <iframe name="gas_iframe" id="gas_iframe" style="display: none;"></iframe>
         </div>
     </section>
     <footer>
@@ -210,9 +232,155 @@
             <button class="img-modal__close" type="button" aria-label="Закрыть" data-close="true">✕</button>
             <img class="img-modal__img" id="imgModalImg" alt="Увеличенный отзыв">
         </div>
-    </div>   -->
+    </div>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="./js/main.js"></script>
+    <script>
+        (function () {
+            const form = document.getElementById('contactForm');
+            const submitBtn = form.querySelector('.contact__btn');
+            const btnText = submitBtn.querySelector('.btn__text') || submitBtn;
+            const messageDiv = document.getElementById('formMessage');
+            const iframe = document.getElementById('gas_iframe');
+
+            // Настройки UX
+            const COOLDOWN_MS = 10000;      // 30 сек блокировка повторной отправки
+            const REQUEST_TIMEOUT_MS = 12000; // если iframe не загрузился
+            const AUTOHIDE_MS = 10000;       // авто-скрытие сообщения
+
+            let isSubmitting = false;
+            let timeoutId = null;
+            let hideMsgId = null;
+
+            // Для антибота "слишком быстро"
+            const formShownAt = Date.now();
+
+            // Восстановление кулдауна после перезагрузки страницы
+            const cooldownUntil = Number(localStorage.getItem('contactCooldownUntil') || 0);
+            if (cooldownUntil > Date.now()) {
+                lockButton(cooldownUntil - Date.now());
+            }
+
+            form.addEventListener('submit', function (e) {
+                // 1) Honeypot: если поле "website" заполнено — считаем ботом
+                const hp = form.querySelector('input[name="website"]');
+                if (hp && hp.value.trim()) {
+                    // Тихо "успешно" (чтобы бот не понял, что его поймали)
+                    e.preventDefault();
+                    showMessage('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+                    form.reset();
+                    return;
+                }
+
+                // 2) Защита от даблклика
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return;
+                }
+
+                // 3) Если идёт кулдаун — не отправляем
+                const until = Number(localStorage.getItem('contactCooldownUntil') || 0);
+                if (until > Date.now()) {
+                    e.preventDefault();
+                    const sec = Math.ceil((until - Date.now()) / 1000);
+                    showMessage(`⏳ Подождите ${sec} сек. перед повторной отправкой.`, 'error');
+                    return;
+                }
+
+                // 4) Добавим requestId и время "сколько открыта форма"
+                ensureHidden('requestId', Date.now().toString());
+                ensureHidden('clientOpenMs', String(Date.now() - formShownAt));
+
+                // UI
+                clearTimers();
+                messageDiv.style.display = 'none';
+
+                isSubmitting = true;
+                submitBtn.disabled = true;
+                submitBtn.classList.add('is-loading');
+                if (btnText !== submitBtn) btnText.textContent = 'Отправка...';
+
+                // Таймаут на случай, если iframe не загрузился
+                timeoutId = setTimeout(() => {
+                    isSubmitting = false;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('is-loading');
+                    if (btnText !== submitBtn) btnText.textContent = 'Записаться на консультацию';
+
+                    showMessage('⚠️ Не удалось дождаться ответа. Но если письмо пришло — всё ок. Попробуйте ещё раз позже.', 'error');
+                }, REQUEST_TIMEOUT_MS);
+            });
+
+            // Успех считаем по факту загрузки iframe (без postMessage — стабильнее)
+            iframe.addEventListener('load', function () {
+                if (!isSubmitting) return;
+
+                clearTimers();
+                isSubmitting = false;
+
+                // Ставим кулдаун
+                const until = Date.now() + COOLDOWN_MS;
+                localStorage.setItem('contactCooldownUntil', String(until));
+
+                showMessage('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+                form.reset();
+
+                // Разблокируем кнопку, но с обратным отсчётом
+                lockButton(COOLDOWN_MS);
+            });
+
+            function lockButton(ms) {
+                const end = Date.now() + ms;
+                localStorage.setItem('contactCooldownUntil', String(end));
+
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('is-loading');
+
+                const tick = () => {
+                    const left = end - Date.now();
+                    if (left <= 0) {
+                        submitBtn.disabled = false;
+                        if (btnText !== submitBtn) btnText.textContent = 'Записаться на консультацию';
+                        localStorage.removeItem('contactCooldownUntil');
+                        return;
+                    }
+                    const sec = Math.ceil(left / 1000);
+                    if (btnText !== submitBtn) btnText.textContent = `Отправлено ✓ (${sec}с)`;
+                    requestAnimationFrame(tick);
+                };
+                tick();
+            }
+
+            function ensureHidden(name, value) {
+                let input = form.querySelector(`input[name="${name}"]`);
+                if (!input) {
+                    input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    form.appendChild(input);
+                }
+                input.value = value;
+            }
+
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.style.display = 'block';
+                messageDiv.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+                messageDiv.style.color = type === 'success' ? '#155724' : '#721c24';
+                messageDiv.style.border = `1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'}`;
+
+                clearTimeout(hideMsgId);
+                hideMsgId = setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, AUTOHIDE_MS);
+            }
+
+            function clearTimers() {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+        })();
+    </script>
     <script>
         AOS.init();
     </script>
