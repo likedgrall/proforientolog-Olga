@@ -320,6 +320,10 @@
       }
     }
   }
+
+  .work__elements {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (max-width: 600px) {

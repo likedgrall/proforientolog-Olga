@@ -195,9 +195,10 @@ header {
   }
 
   & .work__elements {
-    display: flex;
-    gap: 40px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+    gap: 40px; /* расстояние между блоками */
+    justify-items: center; /* центрирование по горизонтали */
 
     & .work__item {
       display: flex;
@@ -608,14 +609,14 @@ footer {
   inset: 0;
   display: none;
   z-index: 9999;
-  transition: 0.4s;           
+  transition: 0.4s;
   padding: 0 8px;
 }
 
 .img-modal.is-open {
   display: flex;
-  justify-content: center;    
-  align-items: center;  
+  justify-content: center;
+  align-items: center;
 }
 
 .img-modal__overlay {
@@ -665,7 +666,6 @@ footer {
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
- 
 }
 
 .img-modal__close:hover {
