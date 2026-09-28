@@ -144,9 +144,7 @@
 @media (max-width: 950px) {
   .work {
     & .work__elements {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr);
       gap: 100px;
       & .work__item {
         max-width: 400px;
@@ -321,9 +319,6 @@
     }
   }
 
-  .work__elements {
-    grid-template-columns: 1fr !important;
-  }
 }
 
 @media (max-width: 600px) {

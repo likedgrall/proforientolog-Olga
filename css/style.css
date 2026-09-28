@@ -196,7 +196,7 @@ header {
 
   & .work__elements {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 колонки */
     gap: 40px; /* расстояние между блоками */
     justify-items: center; /* центрирование по горизонтали */
 
@@ -206,6 +206,9 @@ header {
       max-width: 400px;
       width: 100%;
       gap: 50px;
+      &:last-child {
+        grid-column: 1 / -1;
+      }
       & img {
         width: 100%;
       }
